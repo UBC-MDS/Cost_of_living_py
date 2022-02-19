@@ -13,7 +13,8 @@ Our app will allow users to view these categorization which can be easily filter
 * Shopping includes buying jeans, summer dress, sports shoes, leather shoes one for each in a month.
 * Childcare fee includes the monthly cost for one preschool child.
 * Monthly saving is how much USD the person is likely to save in a month, which was calculated by deducting all the costs mentioned above(except the childcare fee) from the average monthly salary(after tax) .
-* Property price per square meter is the average price of buying a house in city center and outside center.This also includes the price of buying a car.
+* Property price per square meter is the average price of buying a house in city center and outside center.
+* Price of buying a car.
 * The currency unit has been converted from Euro to USD and the current rate is 1 Euro = 1.14 USD
 
 # Section 3: Research questions and usage scenarios
