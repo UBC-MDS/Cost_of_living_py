@@ -10,7 +10,7 @@ Our app will allow users to view these categorization which can be easily filter
 * Public transportation includes average monthly cost of taxi's and monthly bus passes .
 * Liquor, cigarettes, and movie cost were included in entertainment category.
 * Fitness fee includes monthly membership in fitness club only(tennis court rent is uncommon and was dropped).
-* Shopping includes buying jeans, summer dress, sports shoes, leather shoes one for each in a month.
+* Shopping includes buying jeans, summer dress, sports shoes, leather shoes once per month.
 * Childcare fee includes the monthly cost for one preschool child.
 * Monthly saving is how much USD the person is likely to save in a month, which was calculated by deducting all the costs mentioned above(except the childcare fee) from the average monthly salary(after tax) .
 * Property price per square meter is the average price of buying a house in city center and outside center.
