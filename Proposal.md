@@ -4,7 +4,13 @@ In this project , we are using the **Cost of Living - NUMBEO Dataset** which is 
 The Kaggle Dataset has been extracted from [numbeo](https://www.numbeo.com/cost-of-living) which is the world’s largest crowd-sourced cost of living database which collect statitics on the quality of life informations including housing indicators, crime rates, and healthcare, among many other statistics. The website contains around 7,541,898 prices in 10,529 cities which have been entered by 630,509 contributors.
 We will be visualizing the data of 160 cities which was collected in the year 2020.The dataset contains 56 different columns that contain cost of living
 information which we have processed and broadly classified into major categories such as `monthly salary`, `rent`, `grocery`, `utility`, `shopping`, `entertainment`, `fitness`, `property_price`, `transportation`, `childcare expenses`,`monthly_savings` miscellaneous for ease of visualization and understanding.
-Our app will allow users to view these categorization and they can easily filter and view statistics for different cities or region or country. Since, the main aim of this project is to give an overview of the cost of living standards to new Graduates, we have made few assumptions such rent and grocery for a single person, childcare for one child.
+Our app will allow users to view these categorization and they can easily filter and view statistics for different cities or region or country. Since, the main aim of this project is to give an overview of the cost of living standards to new Graduates, some of the assumption that were made are :
+* Rent for one person considers the average of rent for a one-bedroom in city center and outside city center and grocery for a single person
+* Person uses public transportation which includes average monthly cost of taxi's , monthly bus passes .
+* Liquor and cigarettes ,movie cost were included in entertainment category.
+* Fitness fee includes monthly membership in fitness club only(tennis court rent is uncommon and was dropped).
+* Shopping includes buying jeans, summer dress, sports shoes, leather shoes one for each in a month.
+
 # Section 3: Research questions and usage scenarios
 
 Our project answers the broad research question of: “What is the average
