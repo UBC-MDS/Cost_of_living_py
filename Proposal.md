@@ -1,3 +1,9 @@
+# Section 2: Description of Data
+
+In this project , we are using the **Cost of Living - NUMBEO Dataset** which is avaialble in [Kaggle](https://www.kaggle.com/joeypp/cost-of-living-numbeo-dataset/) .This data set contains cost of living information of 160 cities across the globe with variety of information such as country, city name, region, rent, cost of owning a house, car etc.
+The Kaggle Dataset has been extracted from [numbeo](https://www.numbeo.com/cost-of-living/) which is the world’s largest crowd-sourced cost of living database which collect statitics on the quality of life informations including housing indicators, crime rates, and healthcare, among many other statistics. The website contains around 7,541,898 prices in 10,529 cities which have been entered by 630,509 contributors.
+ 
+
 # Section 3: Research questions and usage scenarios
 
 Our project answers the broad research question of: “What is the average
