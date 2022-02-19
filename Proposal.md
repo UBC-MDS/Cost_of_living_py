@@ -5,6 +5,7 @@ The Kaggle Dataset has been extracted from [numbeo](https://www.numbeo.com/cost-
 We will be visualizing the data of 160 cities which was collected in the year 2020.The dataset has 56 different columns that contain cost of living
 information which we have processed and broadly classified into major categories such as `monthly salary`, `rent`, `grocery`, `utility`, `shopping`, `entertainment`, `fitness`, `property_price`, `transportation`, `childcare expenses`,`monthly_savings` miscellaneous for ease of visualization and understanding.Although the original dataset contained all the prices in Euro, we have converted the prices to USD.
 Our app will allow users to view these categorization which can be easily filtered to view the statistics for different cities or region or country. Since, the main aim of this project is to give an overview of the cost of living standards to new Graduates, we have processed the data based on following assumptions:
+
 * Rent for one person considers the average of rent for a one-bedroom in city center and outside city center and grocery for a single person.
 * Person uses public transportation which includes average monthly cost of taxi's , monthly bus passes .
 * Liquor and cigarettes ,movie cost were included in entertainment category.
@@ -14,6 +15,7 @@ Our app will allow users to view these categorization which can be easily filter
 * Monthly saving is how much USD the person is likely to save in a month, which was calculated by monthly salary(after tax) after deducting all the costs mentioned above(except the childcare fee).
 * Property price per square meter is the average price of buying a house in city center and outside center.This also includes the price of buying a car.
 * The currency unit has been converted from Euro to USD and the current rate is 1 Euro = 1.14 USD
+
 # Section 3: Research questions and usage scenarios
 
 Our project answers the broad research question of: “What is the average
