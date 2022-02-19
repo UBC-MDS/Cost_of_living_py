@@ -7,8 +7,9 @@ information which we have processed and broadly classified into major categories
 Our app will allow users to view these categorization which can be easily compared with other cities or regions. Since, the main aim of this project is to give an overview of the cost of living standards to new Graduates, we have processed the data based on following assumptions:
 
 * Rent for one person considers the average of rent for a one-bedroom in city center and outside city center 
+* Grocery for one person includes average price of basic fruits, vegetables, diary and meat consumed by one person in a month.
 * Public transportation includes average monthly cost of taxi's and monthly bus passes .
-* Liquor, cigarettes, and movie cost were included in entertainment category.
+* Liquor, cigarettes,dining out and movie cost were included in entertainment category.
 * Fitness fee includes monthly membership in fitness club only(tennis court rent is uncommon and was dropped).
 * Shopping includes buying jeans, summer dress, sports shoes, leather shoes once per month.
 * Childcare fee includes the monthly cost for one preschool child.
