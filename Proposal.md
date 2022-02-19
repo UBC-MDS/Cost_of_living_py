@@ -8,7 +8,7 @@ Our app will allow users to view these categorization which can be easily filter
 
 * Rent for one person considers the average of rent for a one-bedroom in city center and outside city center and grocery for a single person.
 * Person uses public transportation which includes average monthly cost of taxi's , monthly bus passes .
-* Liquor and cigarettes ,movie cost were included in entertainment category.
+* Liquor, cigarettes, and movie cost were included in entertainment category.
 * Fitness fee includes monthly membership in fitness club only(tennis court rent is uncommon and was dropped).
 * Shopping includes buying jeans, summer dress, sports shoes, leather shoes one for each in a month.
 * Childcare fee includes the monthly cost for one preschool child.
