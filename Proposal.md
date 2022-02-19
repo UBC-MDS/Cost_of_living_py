@@ -6,7 +6,7 @@ We will be visualizing the data of 160 cities which was collected in the year 20
 information which we have processed and broadly classified into major categories such as `monthly salary`, `rent`, `grocery`, `utility`, `shopping`, `entertainment`, `fitness`, `property_price`, `transportation`, `childcare expenses`,`monthly_savings` miscellaneous for ease of visualization and understanding.Although the original dataset contained all the prices in Euro, we have converted the prices to USD.
 Our app will allow users to view these categorization which can be easily filtered to view the statistics for different cities or region or country. Since, the main aim of this project is to give an overview of the cost of living standards to new Graduates, we have processed the data based on following assumptions:
 
-* Rent for one person considers the average of rent for a one-bedroom in city center and outside city center and grocery for a single person.
+* Rent for one person considers the average of rent for a one-bedroom in city center and outside city center 
 * Public transportation includes average monthly cost of taxi's and monthly bus passes .
 * Liquor, cigarettes, and movie cost were included in entertainment category.
 * Fitness fee includes monthly membership in fitness club only(tennis court rent is uncommon and was dropped).
