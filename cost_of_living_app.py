@@ -4,11 +4,20 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 
 data = pd.read_csv("data/processed_data.csv")
-cities = sorted(data["city"].unique())
-regions = data["region"].unique()
-price_subset = ["rent_for_one_person", "transportation_public",
-	"grocery_for_one_person", "entertainment", "fitness", "utility_bills",	
-    "shopping",	"all", "childcare_for_one_child"]
+regions = sorted(data["region"].unique())
+price_subset = {"Monthly Rent":"rent_for_one_person", 
+                "Public Transport": "transportation_public",
+                "Basic Groceries": "grocery_for_one_person", 
+                "Entertainment":"entertainment", 
+                "Fitness":"fitness", 
+                "Utilities":"utility_bills",	
+                "Shopping": "shopping",	
+                "All":"all", 
+                "Childcare":"childcare_for_one_child"}
+
+fnameDict = {'City': sorted(data["city"].unique()), 'Region': sorted(data["region"].unique())}
+names = list(fnameDict.keys())
+nestedOptions = fnameDict[names[0]]
 
 ## THIS IS THE COST COMPARISON PLOT
 def plot1(city_name):
@@ -52,48 +61,49 @@ server = app.server
 app.title = "Global Cost of Living"
 
 app.layout = dbc.Container([
+    html.Div(html.H1('Global Cost of Living', style={'backgroundColor':'#2eced0', 'textAlign': 'center'})), 
     dbc.Row([
         dbc.Col([
-            html.Div(["Select cities to explore",
-                dcc.Dropdown(
-                    id='Cities', 
-                    value=["Istanbul"],
-                    options=[{'label': i, 'value': i} for i in cities],
-                    multi=True,
-                    style={'height': '10px'})]),
-            html.Div(["OR select a region to explore",
-                dcc.Dropdown(
-                    id='Regions', 
-                    value=["Africa"],
-                    options=[{'label': i, 'value': i} for i in regions],
-                    multi=True)]),
+            html.Div(["Select by:",
+                dcc.RadioItems(
+                    id='selection_type',
+                    options=[{'label': k, 'value': k} for k in names],
+                    value='City',
+                    inputStyle={"margin-left": "25px", "margin-right": "5px", }
+                    )]),
+            html.Br(),
+            dcc.Dropdown(id='selection', multi=True, value=['New York']),
+            html.Br(),
+            html.Br(),
             html.Div(["Select monthly costs",
                 dcc.Dropdown(
                     id='cost_subset', 
-                    value=["all"],
-                    options=[{'label': i, 'value': i} for i in price_subset],
+                    value=["All"],
+                    options=[{'label': i, 'value': i} for i in list(price_subset.keys())],
                     multi=True)]),
+            html.Br(),
+            html.Br(),
             html.Div(["Expected monthly earnings ($USD)",
                 dcc.Input(id="Expected_earnings", 
                     type="number", 
                     placeholder=0, 
                     style={'marginRight':'10px'})
-                ])],width= 4),
+                ])],width= 3),
         dbc.Col([html.Iframe( id = "comparison_plot",
             style={'border-width': '0', 'width': '100%', 'height': '500px'},
             srcDoc= plot1(["Istanbul"]))
-        ], width="auto"),
+            ], width="auto"),
         dbc.Col([html.Iframe( id = "monthly_surplus",
             style={'border-width': '0', 'width': '100%',  'height': '500px'},
             srcDoc= plot2(["Istanbul"]))
-        ], width="auto") 
+            ], width="auto") 
     ]),
     dbc.Row([
         dbc.Col([html.Iframe( id = "heat_map",
             style={'border-width': '0', 'width': '100%', 'height': '500px'},
             srcDoc= plot3(["Istanbul"]))
             ], 
-            width={"size": "auto","offset": 4}),
+            width={"size": "auto","offset": 3}),
         dbc.Col([html.Iframe( id = "property_price",
             style={'border-width': '0', 'width': '100%', 'height': '500px'},
             srcDoc= plot4(["Istanbul"]))
@@ -101,14 +111,25 @@ app.layout = dbc.Container([
     ]),
 ], fluid=True)
 
+@app.callback(
+    Output('selection', 'options'),
+    [Input('selection_type', 'value')]
+)
+def update_date_dropdown(name):
+    return [{'label': i, 'value': i} for i in fnameDict[name]]
+
 @app.callback(   
     Output('comparison_plot', 'srcDoc'),
     Output('monthly_surplus', 'srcDoc'),
     Output('heat_map', 'srcDoc'),
     Output('property_price', 'srcDoc'),
-    Input('Cities','value'))
+    Input('selection','value'))
 
-def update_output(city_name):
+def update_output(selection):
+    if selection[0] in regions:
+        city_name = data.loc[data.region == selection[0], "city"]
+    else:
+        city_name = selection 
     return plot1(city_name), plot2(city_name), plot3(city_name), plot4(city_name)
 
 if __name__ == '__main__':
