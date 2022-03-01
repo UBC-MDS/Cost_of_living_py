@@ -1,0 +1,1 @@
+web: gunicorn cost_of_living_app:server
