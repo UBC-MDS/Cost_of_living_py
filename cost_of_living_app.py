@@ -56,39 +56,57 @@ def plot4(city_name):
     )
     return chart.to_html()
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR])
 server = app.server
 app.title = "Global Cost of Living"
 
+colors = {"menues": "#fdf6e3",
+        "fonts": "black"}
+font = {"menues": 17}
+
 app.layout = dbc.Container([
-    html.Div(html.H1('Global Cost of Living', style={'backgroundColor':'#2eced0', 'textAlign': 'center'})), 
+    dbc.NavbarSimple(
+        brand="Explore Global Cost Of Living",
+        color="primary"), 
     dbc.Row([
         dbc.Col([
-            html.Div(["Select by:",
-                dcc.RadioItems(
-                    id='selection_type',
-                    options=[{'label': k, 'value': k} for k in names],
-                    value='City',
-                    inputStyle={"margin-left": "25px", "margin-right": "5px", }
-                    )]),
+            html.Div(["Select by:"], style={'fontSize': 22}), 
+            dcc.RadioItems(
+                id='selection_type',
+                options=[{'label': k, 'value': k} for k in names],
+                value='City',
+                inputStyle={"margin-left": "25px", 
+                    "margin-right": "5px", 
+                    "fontSize": font["menues"], 
+                    "color": colors["fonts"] }
+                ),
             html.Br(),
-            dcc.Dropdown(id='selection', multi=True, value=['New York']),
-            html.Br(),
-            html.Br(),
-            html.Div(["Select monthly costs",
-                dcc.Dropdown(
-                    id='cost_subset', 
-                    value=["All"],
-                    options=[{'label': i, 'value': i} for i in list(price_subset.keys())],
-                    multi=True)]),
+            dcc.Dropdown(id='selection', multi=True, value=['New York'],
+                style = {"backgroundColor":colors["menues"], 
+                    "fontSize": font["menues"], 
+                    "color": colors["fonts"]}),
             html.Br(),
             html.Br(),
-            html.Div(["Expected monthly earnings ($USD)",
-                dcc.Input(id="Expected_earnings", 
-                    type="number", 
-                    placeholder=0, 
-                    style={'marginRight':'10px'})
-                ])],width= 3),
+            html.Div(["Select monthly costs"], style={'fontSize': 22}),
+            dcc.Dropdown(
+                id='cost_subset', 
+                value=["All"],
+                options=[{'label': i, 'value': i} for i in list(price_subset.keys())],
+                multi=True,
+                style = {"backgroundColor":colors["menues"], 
+                    "fontSize": font["menues"], 
+                    "color": colors["fonts"]}),
+            html.Br(),
+            html.Br(),
+            html.Div(["Expected monthly earnings ($USD)"],style={'fontSize': 22}),
+            dcc.Input(id="Expected_earnings", 
+                type="number", 
+                placeholder=0, 
+                style={'marginRight':'10px',
+                    "backgroundColor":colors["menues"], 
+                    "fontSize": font["menues"], 
+                    "color": colors["fonts"]})
+            ],width= 3),
         dbc.Col([html.Iframe( id = "comparison_plot",
             style={'border-width': '0', 'width': '100%', 'height': '500px'},
             srcDoc= plot1(["Istanbul"]))
