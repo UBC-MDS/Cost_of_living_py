@@ -1,4 +1,3 @@
-from turtle import width
 from dash import Dash, html, dcc, Input, Output, State
 import altair as alt
 import pandas as pd
@@ -21,51 +20,20 @@ names = list(fnameDict.keys())
 nestedOptions = fnameDict[names[0]]
 
 ## THIS IS THE COST COMPARISON PLOT
-def plot1(city_name,cost_subset):
-    """
-    Compare the specefic cost of living between selected cities.
-
-    param: city_name A list of selected cities
-    param: cost_subset A string of selected specific cost type
-    return: A bar chart showing living cost in selected cities 
-    """
+def plot1(city_name):
     subset = data.loc[data["city"].isin(city_name),:]
     chart = alt.Chart(subset).mark_bar().encode(
-         alt.Y(cost_subset, title = str.capitalize(cost_subset)+"(USD)"),
-         alt.X("city", title = "City", sort = "y", axis=alt.Axis(labelAngle=-45)),
-         alt.Color("city",legend=None),
-         tooltip=[
-            alt.Tooltip(cost_subset),
-        ]
-    ).properties(
-        title='Cost of living comparison',
-    
+         alt.X("city", title = "City"),
+         alt.Y("grocery_for_one_person", title = "Grocery Price")
     )
     return chart.to_html()
 
 ## THIS IS THE MONTHLY SURPLUS PLOT
-def plot2(city_name, Expected_earnings):
-    """
-    Calculate expected monthly savings in selected cities.
-
-    param: city_name A list of selected cities
-    param: Expected_earnings An integer of expected monthly earning
-    return: A bar chart showing monthly savings in selected cities 
-    """
-    pd.options.mode.chained_assignment = None
+def plot2(city_name):
     subset = data.loc[data["city"].isin(city_name),:]
-    if Expected_earnings == None:
-        Expected_earnings = 0
-    subset["monthly_surplus"] = Expected_earnings - subset["all"]
     chart = alt.Chart(subset).mark_bar().encode(
-         alt.Y("monthly_surplus", title = "Monthly Saving(USD)"),
-         alt.X("city", title = "City", sort = "-y", axis=alt.Axis(labelAngle=-45)),
-         alt.Color("city",legend=None),
-         tooltip=[
-            alt.Tooltip('monthly_surplus'),
-        ]
-    ).properties(
-        title='Monthly saving comparison',
+         alt.X("city", title = "City"),
+         alt.Y("monthly_saving", title = "Savings")
     )
     return chart.to_html()
 
@@ -110,25 +78,24 @@ app.layout = dbc.Container([
             html.Div(["Select monthly costs",
                 dcc.Dropdown(
                     id='cost_subset', 
-                    value="all",
-                    options=[{'label': i, 'value': price_subset[i]} for i in list(price_subset.keys())],
-                    multi=False)]),
+                    value=["All"],
+                    options=[{'label': i, 'value': i} for i in list(price_subset.keys())],
+                    multi=True)]),
             html.Br(),
             html.Br(),
             html.Div(["Expected monthly earnings ($USD)",
                 dcc.Input(id="Expected_earnings", 
                     type="number", 
-                    placeholder=0,
-                    value=0, 
+                    placeholder=0, 
                     style={'marginRight':'10px'})
                 ])],width= 3),
         dbc.Col([html.Iframe( id = "comparison_plot",
             style={'border-width': '0', 'width': '100%', 'height': '500px'},
-            srcDoc= plot1(["New York"],"all"))
+            srcDoc= plot1(["Istanbul"]))
             ], width="auto"),
         dbc.Col([html.Iframe( id = "monthly_surplus",
             style={'border-width': '0', 'width': '100%',  'height': '500px'},
-            srcDoc= plot2(["New York"], 3000))
+            srcDoc= plot2(["Istanbul"]))
             ], width="auto") 
     ]),
     dbc.Row([
@@ -156,16 +123,14 @@ def update_date_dropdown(name):
     Output('monthly_surplus', 'srcDoc'),
     Output('heat_map', 'srcDoc'),
     Output('property_price', 'srcDoc'),
-    Input('selection','value'),
-    Input('cost_subset','value'),
-    Input('Expected_earnings','value'))
+    Input('selection','value'))
 
-def update_output(selection,cost_subset,Expected_earnings):
+def update_output(selection):
     if selection[0] in regions:
         city_name = data.loc[data.region == selection[0], "city"]
     else:
         city_name = selection 
-    return plot1(city_name,cost_subset), plot2(city_name, Expected_earnings), plot3(city_name), plot4(city_name)
+    return plot1(city_name), plot2(city_name), plot3(city_name), plot4(city_name)
 
 if __name__ == '__main__':
     app.run_server(debug=True)
