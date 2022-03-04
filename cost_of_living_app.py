@@ -47,13 +47,25 @@ def plot3(city_name):
     )
     return chart.to_html()
 
-## THIS IS THE PROPERTY PRICE PLOT
+## THIS IS THE PROPERTY PRICE PLOT 
 def plot4(city_name):
+    """
+    Compare property prices between selected cities.
+    param: city_name A list of selected cities
+    return: A bar chart showing property prices in selected cities 
+    """
     subset = data.loc[data["city"].isin(city_name),:]
     chart = alt.Chart(subset).mark_bar().encode(
-         alt.X("city", title = "City"),
-         alt.Y("property_price", title = "Property Price")
+         alt.X("city", title = "Cities"),
+         alt.Y("property_price", title = "Property Price"),
+         alt.Color("city",legend=None),
+         tooltip=[
+            alt.Tooltip("property_price"),
+        ]
+    ).properties(
+        title='Property Prices',
     )
+
     return chart.to_html()
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -105,8 +117,7 @@ app.layout = dbc.Container([
             ], 
             width={"size": "auto","offset": 3}),
         dbc.Col([html.Iframe( id = "property_price",
-            style={'border-width': '0', 'width': '100%', 'height': '500px'},
-            srcDoc= plot4(["Istanbul"]))
+            style={'border-width': '0', 'width': '100%', 'height': '500px'})
         ], width="auto") 
     ]),
 ], fluid=True)
