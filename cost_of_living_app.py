@@ -1,11 +1,12 @@
 from dash import Dash, html, dcc, Input, Output, State
+from vega_datasets import data
 import altair as alt
 import pandas as pd
 import dash_bootstrap_components as dbc
 
 data = pd.read_csv("data/processed_data.csv")
 regions = sorted(data["region"].unique())
-price_subset = {"All":"all",
+price_subset = {"Total Monthly cost":"all",
                 "Basic Groceries": "grocery_for_one_person",
                 "Childcare":"childcare_for_one_child", 
                 "Entertainment":"entertainment", 
@@ -78,6 +79,7 @@ def plot3(city_name, cost_subset):
     """
     subset = data.loc[data["city"].isin(city_name),:]
     world_map = alt.topo_feature(data.world_110m.url, feature ='countries')  
+    map_click = alt.selection_multi(fields=['city'])
 
     # background
     background = alt.Chart(world_map).mark_geoshape(
@@ -94,8 +96,9 @@ def plot3(city_name, cost_subset):
             color='region:N',
             size=alt.Size(cost_subset, scale=alt.Scale(range=[0, 1000]),
                           legend=alt.Legend(title=str.capitalize(cost_subset) + "(USD)")),
+            opacity=alt.condition(map_click, alt.value(0.8), alt.value(0.2)),
             tooltip=['city', 'region', 'country', cost_subset],
-            stroke=alt.value('white')).project(type='mercator').properties(width=600, height=350)
+            stroke=alt.value('white')).project(type='mercator').properties(width=600, height=350).add_selection(map_click)
     chart = background + points
 
     return chart.to_html()
@@ -194,7 +197,7 @@ heat_map =  dbc.Card([dbc.CardHeader('Map of living costs'),
                             children = html.Iframe(
                                 id = "heat_map",
                                 style={'border-width': '0', 'width': '100%', 'height': '500px'},
-                                srcDoc= plot3(["Istanbul"]))
+                                srcDoc= plot3(["Istanbul"],"all"))
                                 ))
                             ], style={"height": "30rem"})                          
 property_price = dbc.Card([dbc.CardHeader('Average property price per square meter'),
