@@ -86,14 +86,14 @@ def plot3(city_name, cost_subset):
          stroke='black',
          fill='lightgray').encode(
         ).properties(
-            width=800,
-            height=800
+            width=780,
+            height=600
         )
     # city positions on background
     points = alt.Chart(subset).mark_circle().encode(
             longitude='longitude:Q',
             latitude='latitude:Q',
-            color='region:N',
+            color='city:N',
             size=alt.Size(cost_subset, scale=alt.Scale(range=[0, 1000]),
                           legend=alt.Legend(title=str.capitalize(cost_subset) + "(USD)")),
             opacity=alt.condition(map_click, alt.value(0.8), alt.value(0.2)),
@@ -174,7 +174,8 @@ sidebar = html.Div(
         ]),
     html.Br(),
     html.Br(),
-    "The currency unit has been converted from Euro to USD and the current rate is 1 Euro = 1.14 USD",
+    html.H6("The currency unit has been converted from Euro to USD and the current rate is 1 Euro = 1.14 USD", 
+        style={"justify": "center", "textAlign": "center"})
     ], style=SIDEBAR_STYLE,)
 
 comparison_plot = dbc.Card([dbc.CardHeader('Monthly Cost Comparison'),
@@ -199,10 +200,10 @@ heat_map =  dbc.Card([dbc.CardHeader('Map of living costs'),
                             dbc.CardBody(dcc.Loading(
                             children = html.Iframe(
                                 id = "heat_map",
-                                style={'border-width': '0', 'width': '100%', 'height': '500px'},
+                                style={'border-width': '0', 'width': '100%', 'height': '650px'},
                                 srcDoc= plot3(["Istanbul"],"all"))
                                 ))
-                            ], style={"height": "30rem"})                          
+                            ], style={"height": "45rem"})                          
 property_price = dbc.Card([dbc.CardHeader('Average property price per square meter'),
                             dbc.CardBody(dcc.Loading(
                             children = html.Iframe(
@@ -274,6 +275,9 @@ content = dbc.Container([
             dbc.Col([footer])
             ], label = 'Cost of Living Comparison'),
         dbc.Tab([ 
+            html.Br(),
+            "All the data represents the year 2020.",
+            html.Br(),
             html.Br(),
             data_description
         ], label = 'Monthly Cost Details')
