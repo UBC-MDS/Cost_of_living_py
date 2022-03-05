@@ -4,6 +4,8 @@
 This python-based [dashboard](https://cost-of-living-comparison.herokuapp.com/) is designed to help new college graduates explore the cost of living in different major cities around the world.Our dashboard aims to ease the decision making for the last factor mentioned.In this project , we are using the **Cost of Living - NUMBEO Dataset** which is avaialable in [Kaggle](https://www.kaggle.com/joeypp/cost-of-living-numbeo-dataset).
 More details about the usage of this dashboard can be found in the [proposal document](https://github.com/UBC-MDS/Cost_of_living_py/blob/main/Proposal.md).
 
+![](img/demo.gif)
+
 # Our Motivation
 Students completing their degree spend the last 3 to 4 months of their last semester wondering: what next? Students who are looking to work after graduating especially have questions about the current job market, companies and whether they will be able to afford moving to a new country or city for a job. There should be a one stop solution where in these users(graduationg students) can simply key in the desired city or region and estimated income which would give them information about the cost of living as well as the expected savings per month to help them plan better.
 # Our Solution
@@ -27,7 +29,7 @@ Our dashboard can be accessed [here](https://cost-of-living-comparison.herokuapp
 <br>
 <br>
 <br>
-<img src="img/final_dashboard_design.jpg">
+
 
 # Installation Guide
 
@@ -62,8 +64,6 @@ The following softwares were used for the creation and deployment of this dashbo
 * [Altair documentation](https://altair-viz.github.io/index.html)
 * [Deploying Dash (on Heroku)](https://dash.plotly.com/deployment)
 
-# Screenshot
-![](img/demo.gif)
 
 # License
 `cost-of-living-comparison` dashboard was created by Affrin Sultana, Arushi Ahuja, Jiwei Hu, Margot Vore. It is licensed under the terms of the MIT license.
