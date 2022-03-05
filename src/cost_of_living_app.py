@@ -88,7 +88,7 @@ def plot3(city_name, cost_subset):
          stroke='black',
          fill='lightgray').encode(
         ).properties(
-            width=780,
+            width=760,
             height=600
         )
     # city positions on background
