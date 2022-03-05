@@ -4,8 +4,8 @@ import altair as alt
 import pandas as pd
 import dash_bootstrap_components as dbc
 
-data = pd.read_csv("data/processed_data.csv")
-regions = sorted(data["region"].unique())
+data_df = pd.read_csv("data/processed_data.csv")
+regions = sorted(data_df["region"].unique())
 price_subset = {"Total Monthly cost":"all",
                 "Basic Groceries": "grocery_for_one_person",
                 "Childcare":"childcare_for_one_child", 
@@ -16,7 +16,7 @@ price_subset = {"Total Monthly cost":"all",
                 "Shopping": "shopping",
                 "Utilities":"utility_bills"}
 
-fnameDict = {'City': sorted(data["city"].unique()), 'Region': sorted(data["region"].unique())}
+fnameDict = {'City': sorted(data_df["city"].unique()), 'Region': sorted(data_df["region"].unique())}
 names = list(fnameDict.keys())
 nestedOptions = fnameDict[names[0]]
 
@@ -29,7 +29,7 @@ def plot1(city_name,cost_subset):
     param: cost_subset, A string of selected specific cost type
     return: A bar chart showing living cost in selected cities 
     """
-    subset = data.loc[data["city"].isin(city_name),:]
+    subset = data_df.loc[data_df["city"].isin(city_name),:]
     chart = alt.Chart(subset).mark_bar().encode(
          alt.Y(cost_subset, title = str.capitalize(cost_subset)+"(USD)"),
          alt.X("city", title = "Cities", sort = "y", axis=alt.Axis(labelAngle=-45)),
@@ -52,7 +52,7 @@ def plot2(city_name, Expected_earnings):
     return: A bar chart showing monthly savings in selected cities 
     """
     pd.options.mode.chained_assignment = None
-    subset = data.loc[data["city"].isin(city_name),:]
+    subset = data_df.loc[data_df["city"].isin(city_name),:]
     if Expected_earnings == None:
         Expected_earnings = 0
     subset["monthly_surplus"] = Expected_earnings - subset["all"]
@@ -77,7 +77,7 @@ def plot3(city_name, cost_subset):
     param: cost_subset, A string of selected specific cost type
     return: A choropleth map with point graph showing varying cost types in selected cities 
     """
-    subset = data.loc[data["city"].isin(city_name),:]
+    subset = data_df.loc[data_df["city"].isin(city_name),:]
     world_map = alt.topo_feature(data.world_110m.url, feature ='countries')  
     map_click = alt.selection_multi(fields=['city'])
 
@@ -111,7 +111,7 @@ def plot4(city_name):
     return: A bar chart showing property prices in selected cities 
     """
 
-    subset = data.loc[data["city"].isin(city_name),:]
+    subset = data_df.loc[data_df["city"].isin(city_name),:]
     chart = alt.Chart(subset).mark_bar().encode(
         alt.X("city", title = "Cities",  axis=alt.Axis(labelAngle=-45)),
          alt.Y("property_price", title = "Property Price"),
@@ -171,7 +171,10 @@ sidebar = html.Div(
             placeholder=2000,
             value=2000, 
             style={'marginRight':'10px'})
-        ])
+        ]),
+    html.Br(),
+    html.Br(),
+    "The currency unit has been converted from Euro to USD and the current rate is 1 Euro = 1.14 USD",
     ], style=SIDEBAR_STYLE,)
 
 comparison_plot = dbc.Card([dbc.CardHeader('Monthly Cost Comparison'),
@@ -222,31 +225,31 @@ footer = html.Footer([dcc.Markdown(
   
 data_description = dbc.Accordion([
             dbc.AccordionItem([
-                html.P("The sum of all monthly costs EXCLUDING childcare."),
+                html.P("The sum of all monthly costs excluding childcare."),
                 ], title = "All"),   
             dbc.AccordionItem([
-                    html.P("Desciption Here"),
+                    html.P("Grocery for one person includes average price of basic fruits, vegetables, diary and meat consumed by one person in a month."),
                 ], title="Basic Groceries"),
             dbc.AccordionItem([
-                html.P("Monthly price of private, full day preschool or kindergarden for 1 kid "),
+                html.P("Monthly price of private, full day preschool or kindergarden for 1 kid."),
                 ], title="Childcare"), 
             dbc.AccordionItem([
-                    html.P("Description_Here"),
+                    html.P("Entertainment cost includes liquor, cigarettes,dining out and movie cost."),
                 ], title="Entertainment"),    
             dbc.AccordionItem([
                     html.P("Fitness club monthly fee for 1 adult"),
                 ], title="Fitness"),  
             dbc.AccordionItem([
-                    html.P("Description_Here"),
+                    html.P("Rent for one person considers the average of rent for a one-bedroom in city center and outside city center."),
                 ], title="Monthly Rent"),
             dbc.AccordionItem([
-                    html.P("Description_Here"),
+                    html.P("Public transportation includes average monthly cost of taxi's and monthly bus passes."),
                 ], title="Public Transport"),
             dbc.AccordionItem([
-                html.P("Description"),
+                html.P("Shopping includes buying jeans, summer dress, sports shoes, leather shoes once per month."),
                 ], title="Shopping"), 
             dbc.AccordionItem([
-                html.P("Description_Here"),
+                html.P("Utlities includes monthly bill for Electricity, Heating, Cooling, Water, Garbage, Prepaid Mobile Tariff Local and Internet"),
                 ], title="Utilities")          
 ])
 
@@ -299,10 +302,10 @@ def update_date_dropdown(name):
 
 def update_output(selection,cost_subset,Expected_earnings):
     if selection[0] in regions:
-        city_name = data.loc[data.region == selection[0], "city"]
+        city_name = data_df.loc[data_df.region == selection[0], "city"]
     else:
         city_name = selection 
-    return plot1(city_name,cost_subset), plot2(city_name, Expected_earnings), plot3(city_name), plot4(city_name)
+    return plot1(city_name,cost_subset), plot2(city_name, Expected_earnings), plot3(city_name, cost_subset), plot4(city_name)
 
 
 
