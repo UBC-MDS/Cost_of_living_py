@@ -29,6 +29,29 @@ Our dashboard can be accessed [here](https://cost-of-living-comparison.herokuapp
 <br>
 <img src="img/final_dashboard_design.jpg">
 
+# Installation Guide
+
+To install the dashboard and run it locally,follow the steps below:
+
+Run the following command at the root directory of the project:
+
+**Set Up**
+```
+## clone the repo to your local
+git clone https://github.com/UBC-MDS/Cost_of_living_py.git
+
+## change directory to your local repository
+cd Cost_of_living_py
+
+## Install all the dependencies
+pip install -r requirements.txt
+```
+**Run the dashboard**
+```
+python src/cost_of_living_app.py
+```
+The dashboard can be accessed locally in localhost:8050.
+
 # Contributing
 Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a [Code of Conduct](https://github.com/UBC-MDS/Cost_of_living_py/blob/main/CODE_OF_CONDUCT.md). Any feedback or enhancements are welcome.Please check out our [contributing guidelines](https://github.com/UBC-MDS/Cost_of_living_py/blob/main/CONTRIBUTING.md).By contributing to this project, you agree to abide by its terms.
 
