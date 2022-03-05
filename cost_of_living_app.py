@@ -79,6 +79,7 @@ def plot3(city_name, cost_subset):
     return: A choropleth map with point graph showing varying cost types in selected cities 
     """
     subset = data_df.loc[data_df["city"].isin(city_name),:]
+    y_title = list(price_subset.keys())[price_subset.values() == cost_subset]
     world_map = alt.topo_feature(data.world_110m.url, feature ='countries')  
     map_click = alt.selection_multi(fields=['city'])
 
@@ -96,7 +97,7 @@ def plot3(city_name, cost_subset):
             latitude='latitude:Q',
             color='city:N',
             size=alt.Size(cost_subset, scale=alt.Scale(range=[0, 1000]),
-                          legend=alt.Legend(title=str.capitalize(cost_subset) + "(USD)")),
+                          legend=alt.Legend(title=f"{y_title}(USD)")),
             opacity=alt.condition(map_click, alt.value(0.8), alt.value(0.2)),
             tooltip=['city', 'region', 'country', cost_subset],
             stroke=alt.value('white')).project(type='mercator').properties(width=600, height=350).add_selection(map_click)
