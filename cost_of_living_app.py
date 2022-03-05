@@ -22,10 +22,10 @@ nestedOptions = fnameDict[names[0]]
 ## THIS IS THE COST COMPARISON PLOT
 def plot1(city_name,cost_subset):
     """
-    Compare the specefic cost of living between selected cities.
+    Compare the specific cost of living between selected cities.
 
-    param: city_name A list of selected cities
-    param: cost_subset A string of selected specific cost type
+    param: city_name, A list of selected cities
+    param: cost_subset, A string of selected specific cost type
     return: A bar chart showing living cost in selected cities 
     """
     subset = data.loc[data["city"].isin(city_name),:]
@@ -69,14 +69,35 @@ def plot2(city_name, Expected_earnings):
 
 
 ## THIS IS THE HEAT MAP PLOT
-def plot3(city_name): 
+def plot3(city_name, cost_subset): 
+    """
+    Visualize the selected cities on world map and how the selected specific cost type varies.
+    param: city_name A list of selected cities
+    param: cost_subset, A string of selected specific cost type
+    return: A choropleth map with point graph showing varying cost types in selected cities 
+    """
     subset = data.loc[data["city"].isin(city_name),:]
-    chart = alt.Chart(subset).mark_bar().encode(
-         alt.X("city", title = "City"),
-         alt.Y("country", title = "Country")
-    ).properties(
-        width=600
-    )
+    world_map = alt.topo_feature(data.world_110m.url, feature ='countries')  
+
+    # background
+    background = alt.Chart(world_map).mark_geoshape(
+         stroke='black',
+         fill='lightgray').encode(
+        ).properties(
+            width=800,
+            height=800
+        )
+    # city positions on background
+    points = alt.Chart(subset).mark_circle().encode(
+            longitude='longitude:Q',
+            latitude='latitude:Q',
+            color='region:N',
+            size=alt.Size(cost_subset, scale=alt.Scale(range=[0, 1000]),
+                          legend=alt.Legend(title=str.capitalize(cost_subset) + "(USD)")),
+            tooltip=['city', 'region', 'country', cost_subset],
+            stroke=alt.value('white')).project(type='mercator').properties(width=600, height=350)
+    chart = background + points
+
     return chart.to_html()
 
 ## THIS IS THE PROPERTY PRICE PLOT
