@@ -25,9 +25,6 @@ Following actions can be performed on our dashboard :
 * Filter the visualizations based on a desired region of interest from the dropdown.
 * Enter the expected monthly salary in USD to get an estimate of the savings.
 <br>
-<br>
-<br>
-
 
 # Installation Guide
 
