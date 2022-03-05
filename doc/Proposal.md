@@ -28,6 +28,11 @@ Our app will allow users to view these categorization which can be easily compar
 * Price of buying a car.
 * The currency unit has been converted from Euro to USD and the current rate is 1 Euro = 1.14 USD
 
+<br>
+<br>
+<br>
+<img src="../img/final_dashboard_design.jpg">
+
 # Section 3: Research questions and usage scenarios
 
 Our project answers the broad research question of: “What is the average
