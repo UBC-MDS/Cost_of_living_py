@@ -1,1 +1,1 @@
-web: gunicorn cost_of_living_app:server
+web: gunicorn src/cost_of_living_app:server
