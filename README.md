@@ -61,6 +61,10 @@ The following softwares were used for the creation and deployment of this dashbo
 * [Dash interactive visualization](https://dash.plotly.com/interactive-graphing)
 * [Altair documentation](https://altair-viz.github.io/index.html)
 * [Deploying Dash (on Heroku)](https://dash.plotly.com/deployment)
+
+# Screenshot
+![](img/demo.gif)
+
 # License
 `cost-of-living-comparison` dashboard was created by Affrin Sultana, Arushi Ahuja, Jiwei Hu, Margot Vore. It is licensed under the terms of the MIT license.
 
