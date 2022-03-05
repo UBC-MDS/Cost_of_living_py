@@ -30,8 +30,9 @@ def plot1(city_name,cost_subset):
     return: A bar chart showing living cost in selected cities 
     """
     subset = data_df.loc[data_df["city"].isin(city_name),:]
+    y_title = list(price_subset.keys())[price_subset.values() == cost_subset]
     chart = alt.Chart(subset).mark_bar().encode(
-         alt.Y(cost_subset, title = str.capitalize(cost_subset)+"(USD)"),
+         alt.Y(cost_subset, title = f"{y_title}(USD)"),
          alt.X("city", title = "Cities", sort = "y", axis=alt.Axis(labelAngle=-45)),
          alt.Color("city",legend=None),
          tooltip=[
