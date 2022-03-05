@@ -24,8 +24,6 @@ Following actions can be performed on our dashboard :
 * Filter the visualizations based on a desired city/cities of interest from the dropdown.
 * Filter the visualizations based on a desired region of interest from the dropdown.
 * Enter the expected monthly salary in USD to get an estimate of the savings.
-
-Our dashboard can be accessed [here](https://cost-of-living-comparison.herokuapp.com/)
 <br>
 <br>
 <br>
