@@ -31,11 +31,8 @@ To install the dashboard and run it locally,follow the steps below:
 
 Run the following command at the root directory of the project:
 ```bash
-## clone the repo to your local
 git clone https://github.com/UBC-MDS/Cost_of_living_py.git
-## change directory to your local repository
 cd Cost_of_living_py
-## Install all the dependencies
 pip install -r requirements.txt
 ```
 **Run the dashboard**
