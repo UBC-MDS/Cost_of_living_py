@@ -9,6 +9,39 @@ More details about the usage of this dashboard can be found in the [proposal doc
 
 ![](img/demo.gif)
 
+# Usage
+
+### App link on Heroku
+
+Using our app online is as easy as clicking the [link](https://cost-of-living-comparison.herokuapp.com/)!
+
+### Run the app locally using docker
+
+To run this app using Docker, write the following commands after cloning the repo:
+
+```bash
+git clone https://github.com/UBC-MDS/Cost_of_living_py.git
+cd Cost_of_living_py
+docker-compose build
+docker-compose up
+```
+Finally, open the app in the following URL localhost:8000/.
+
+### Run this app locally without Docker
+To install the dashboard and run it locally,follow the steps below:
+
+Run the following command at the root directory of the project:
+```bash
+git clone https://github.com/UBC-MDS/Cost_of_living_py.git
+cd Cost_of_living_py
+pip install -r requirements.txt
+```
+**Run the dashboard**
+```bash
+python src/cost_of_living_app.py
+```
+The dashboard can be accessed locally in http://localhost:8050/.
+
 # Our Motivation
 Students completing their degree spend the last 3 to 4 months of their last semester wondering: what next? Students who are looking to work after graduating especially have questions about the current job market, companies and whether they will be able to afford moving to a new country or city for a job. There should be a one stop solution where in these users(graduationg students) can simply key in the desired city or region and estimated income which would give them information about the cost of living as well as the expected savings per month to help them plan better.
 
