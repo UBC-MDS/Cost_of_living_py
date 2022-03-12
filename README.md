@@ -24,7 +24,7 @@ cd Cost_of_living_py
 docker-compose build
 docker-compose up
 ```
-Finally, open the app in the following URL http://localhost:8000/.
+Finally, open the app in the following URL localhost:8000/.
 
 ### Run this app locally without Docker
 To install the dashboard and run it locally,follow the steps below:
