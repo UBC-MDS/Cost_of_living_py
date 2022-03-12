@@ -17,7 +17,7 @@ Using our app online is as easy as clicking the [link](https://cost-of-living-co
 
 ### Run the app locally using docker
 
-To run this app using Docker using docker, write the following commands after cloning the repo:
+To run this app using Docker, write the following commands after cloning the repo:
 
 ```bash
 cd Cost_of_living_py
