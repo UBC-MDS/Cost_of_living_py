@@ -20,6 +20,7 @@ Using our app online is as easy as clicking the [link](https://cost-of-living-co
 To run this app using Docker, write the following commands after cloning the repo:
 
 ```bash
+git clone https://github.com/UBC-MDS/Cost_of_living_py.git
 cd Cost_of_living_py
 docker-compose build
 docker-compose up
