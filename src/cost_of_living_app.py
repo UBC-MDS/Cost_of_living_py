@@ -308,7 +308,7 @@ def update_date_dropdown(name):
 
 def update_output(selection,cost_subset,Expected_earnings):
     if selection[0] in regions:
-        city_name = data_df.loc[data_df.region == selection[0], "city"]
+        city_name = data_df.loc[data_df.region.isin(selection), "city"]
     else:
         city_name = selection 
     return plot1(city_name,cost_subset), plot2(city_name, Expected_earnings), plot3(city_name, cost_subset), plot4(city_name)
