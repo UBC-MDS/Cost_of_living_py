@@ -42,7 +42,7 @@ def plot1(city_name,cost_subset):
          alt.Color("city",legend=None),
          tooltip= cost_subset
     ).properties(
-        width=600
+        width=700
     )
     return chart.to_html()
 
@@ -94,9 +94,10 @@ def plot3(city_name, cost_subset):
     background = alt.Chart(world_map).mark_geoshape(
          stroke='black',
          fill='lightgray').encode(
+        ).project(type='equirectangular'
         ).properties(
-            width=740,
-            height=600
+            width=650,
+            height=350
         )
     # city positions on background
     points = alt.Chart(subset).mark_circle().encode(
@@ -104,10 +105,11 @@ def plot3(city_name, cost_subset):
             latitude='latitude:Q',
             color='city:N',
             size=alt.Size("working", scale=alt.Scale(range=[0, 1000]),
-                          legend=alt.Legend(title=f"{y_title}(USD)")),
+                          legend=alt.Legend(title=f"Sum of Selected Costs (USD)")),
             opacity=alt.condition(map_click, alt.value(0.8), alt.value(0.2)),
-            tooltip=['city', 'region', 'country'],
-            stroke=alt.value('white')).project(type='mercator').properties(width=600, height=350).add_selection(map_click)
+            tooltip=(cost_subset + ['city', 'country']),
+            stroke=alt.value('white')).project(type='equirectangular'
+            ).add_selection(map_click)
     chart = background + points
 
     return chart.to_html()
@@ -209,10 +211,10 @@ heat_map =  dbc.Card([dbc.CardHeader('Map of living costs'),
                             dbc.CardBody(dcc.Loading(
                             children = html.Iframe(
                                 id = "heat_map",
-                                style={'border-width': '0', 'width': '100%', 'height': '650px'},
+                                style={'border-width': '0', 'width': '100%', 'height': '500px'},
                                 srcDoc= plot3(["Istanbul"],["all"]))
                                 ))
-                            ], style={"height": "45rem"})                          
+                            ], style={"height": "30rem"})                          
 property_price = dbc.Card([dbc.CardHeader('Average property price per square meter'),
                             dbc.CardBody(dcc.Loading(
                             children = html.Iframe(
