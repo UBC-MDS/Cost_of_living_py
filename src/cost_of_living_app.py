@@ -265,6 +265,21 @@ data_description = dbc.Accordion([
                 ], title="Utilities")          
 ])
 
+how_it_works = dbc.Accordion([
+            dbc.AccordionItem([
+                html.P("Firstly choose whether you want to compare between select cities or all ctites from a particular region."),
+                ], title = "Select between City and Region Option"),   
+            dbc.AccordionItem([
+                    html.P("After that choose the cities or a region from the drop down menu."),
+                ], title="Drop down menu for cities or region"),
+            dbc.AccordionItem([
+                html.P("Select a monthly cost you would like to compare the cities with, the next tab provides detailed breakdown of each monthly cost."),
+                ], title="Drop down menu for monthly cost"), 
+            dbc.AccordionItem([
+                    html.P("Enter monthly earnings."),
+                ], title="In order to see how much one can save in different cities, enter your expected monthly earnings.")        
+])
+
 
 
 content = dbc.Container([
@@ -285,6 +300,13 @@ content = dbc.Container([
             html.Br(),
             dbc.Col([footer])
             ], label = 'Cost of Living Comparison'),
+        dbc.Tab([ 
+            html.Br(),
+            "Here are some basic steps to help you interact with our app!",
+            html.Br(),
+            html.Br(),
+            how_it_works
+        ], label = 'How it works'),
         dbc.Tab([ 
             html.Br(),
             "All the data represents the year 2020.",
