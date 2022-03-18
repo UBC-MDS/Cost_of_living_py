@@ -5,7 +5,7 @@ The cost-of-living-comparison dashboard can be accessed [here](https://cost-of-l
 <br>
 
 This python-based dashboard is designed to help new college graduates explore the cost of living in different major cities around the world.Our dashboard aims to ease the decision making for the last factor mentioned.In this project , we are using the **Cost of Living - NUMBEO Dataset** which is avaliable in [Kaggle](https://www.kaggle.com/joeypp/cost-of-living-numbeo-dataset).
-More details about the usage of this dashboard can be found in the [proposal document](https://github.com/UBC-MDS/Cost_of_living_py/blob/main/Proposal.md).
+More details about the usage of this dashboard can be found in the [proposal document](https://github.com/UBC-MDS/Cost_of_living_py/blob/main/doc/Proposal.md).
 
 ![](img/demo.gif)
 
