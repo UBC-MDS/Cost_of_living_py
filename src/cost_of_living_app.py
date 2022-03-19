@@ -90,6 +90,7 @@ def plot3(city_name, cost_subset):
     y_title = ' + '.join(cat)
     world_map = alt.topo_feature(data.world_110m.url, feature ='countries')  
     map_click = alt.selection_multi(fields=['city'])
+    # bar_click = alt.selection_multi(fields=['city'])
 
     # background
     background = alt.Chart(world_map).mark_geoshape(
@@ -107,11 +108,19 @@ def plot3(city_name, cost_subset):
             color='city:N',
             size=alt.Size("working", scale=alt.Scale(range=[0, 1000]),
                           legend=alt.Legend(title=f"Sum of Selected Costs (USD)")),
-            opacity=alt.condition(map_click, alt.value(0.8), alt.value(0.2)),
+            # opacity=alt.condition(map_click, alt.value(0.8), alt.value(0.2)),
             tooltip=(cost_subset + ['city', 'country']),
             stroke=alt.value('white')).project(type='equirectangular'
             ).add_selection(map_click)
-    chart = background + points
+            # .transform_filter(bar_click)
+
+    # bar2 = plot2(city_name, Expected_earnings)
+    # .encode(
+    #     opacity=alt.condition(bar_click, alt.value(0.8), alt.value(0.2)),
+    #     stroke=alt.condition(bar_click, alt.value('black'), alt.value('#ffffff00')),
+    #     color='region:N').add_selection(bar_click).transform_filter(map_click)
+
+    chart =  (background + points)
 
     return chart.to_html()
 
@@ -126,7 +135,7 @@ def plot4(city_name):
     subset = data_df.loc[data_df["city"].isin(city_name),:]
     chart = alt.Chart(subset).mark_bar().encode(
         alt.X("city", title = "Cities",  axis=alt.Axis(labelAngle=-45)),
-         alt.Y("property_price", title = "Property Price"),
+         alt.Y("property_price", title = "Property price/m^2(USD)"),
          alt.Color("city",legend=None),
          tooltip=[
             alt.Tooltip("property_price"),
@@ -345,6 +354,7 @@ def update_output(selection,cost_subset,Expected_earnings):
     else:
         city_name = selection 
     return plot1(city_name,cost_subset), plot2(city_name, Expected_earnings), plot3(city_name, cost_subset), plot4(city_name)
+    
 
 
 
