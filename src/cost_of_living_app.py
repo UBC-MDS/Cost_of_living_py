@@ -1,3 +1,4 @@
+from logging import PlaceHolder
 from dash import Dash, html, dcc, Input, Output, State
 from vega_datasets import data
 import altair as alt
@@ -165,7 +166,8 @@ sidebar = html.Div(
         inputStyle={"margin-left": "25px", "margin-right": "5px", }
         ),
     html.Br(),
-    dcc.Dropdown(id='selection', multi=True, value=['Canada']),
+    dcc.Dropdown(id='selection', multi=True, value=['Canada'],
+     placeholder = "Select the cities or region" ),
     html.Br(),
     html.Br(),
     html.Div(["Select monthly costs",
