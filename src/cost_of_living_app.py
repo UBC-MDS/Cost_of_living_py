@@ -1,3 +1,4 @@
+from logging import PlaceHolder
 from dash import Dash, html, dcc, Input, Output, State
 from vega_datasets import data
 import altair as alt
@@ -89,6 +90,7 @@ def plot3(city_name, cost_subset):
     y_title = ' + '.join(cat)
     world_map = alt.topo_feature(data.world_110m.url, feature ='countries')  
     map_click = alt.selection_multi(fields=['city'])
+    # bar_click = alt.selection_multi(fields=['city'])
 
     # background
     background = alt.Chart(world_map).mark_geoshape(
@@ -106,11 +108,13 @@ def plot3(city_name, cost_subset):
             color='city:N',
             size=alt.Size("working", scale=alt.Scale(range=[0, 1000]),
                           legend=alt.Legend(title=f"Sum of Selected Costs (USD)")),
-            opacity=alt.condition(map_click, alt.value(0.8), alt.value(0.2)),
+            # opacity=alt.condition(map_click, alt.value(0.8), alt.value(0.2)),
             tooltip=(cost_subset + ['city', 'country']),
             stroke=alt.value('white')).project(type='equirectangular'
             ).add_selection(map_click)
-    chart = background + points
+            
+
+    chart =  (background + points)
 
     return chart.to_html()
 
@@ -125,7 +129,7 @@ def plot4(city_name):
     subset = data_df.loc[data_df["city"].isin(city_name),:]
     chart = alt.Chart(subset).mark_bar().encode(
         alt.X("city", title = "Cities",  axis=alt.Axis(labelAngle=-45)),
-         alt.Y("property_price", title = "Property Price"),
+         alt.Y("property_price", title = "Property Price/m^2(USD)"),
          alt.Color("city",legend=None),
          tooltip=[
             alt.Tooltip("property_price"),
@@ -165,7 +169,8 @@ sidebar = html.Div(
         inputStyle={"margin-left": "25px", "margin-right": "5px", }
         ),
     html.Br(),
-    dcc.Dropdown(id='selection', multi=True, value=['Canada']),
+    dcc.Dropdown(id='selection', multi=True, value=['Canada'],
+     placeholder = "Select the cities or region" ),
     html.Br(),
     html.Br(),
     html.Div(["Select monthly costs",
@@ -265,6 +270,21 @@ data_description = dbc.Accordion([
                 ], title="Utilities")          
 ])
 
+how_it_works = dbc.Accordion([
+            dbc.AccordionItem([
+                html.P("Firstly choose whether you want to compare between select cities or all ctites from a particular region."),
+                ], title = "Select between City and Region Option"),   
+            dbc.AccordionItem([
+                    html.P("After that choose the cities or a region from the drop down menu."),
+                ], title="Drop down menu for cities or region"),
+            dbc.AccordionItem([
+                html.P("Select a monthly cost you would like to compare the cities with, the next tab provides detailed breakdown of each monthly cost."),
+                ], title="Drop down menu for monthly cost"), 
+            dbc.AccordionItem([
+                    html.P("Enter monthly earnings."),
+                ], title="In order to see how much one can save in different cities, enter your expected monthly earnings.")        
+])
+
 
 
 content = dbc.Container([
@@ -285,6 +305,13 @@ content = dbc.Container([
             html.Br(),
             dbc.Col([footer])
             ], label = 'Cost of Living Comparison'),
+        dbc.Tab([ 
+            html.Br(),
+            "Here are some basic steps to help you interact with our app!",
+            html.Br(),
+            html.Br(),
+            how_it_works
+        ], label = 'How it works'),
         dbc.Tab([ 
             html.Br(),
             "All the data represents the year 2020.",
@@ -321,6 +348,7 @@ def update_output(selection,cost_subset,Expected_earnings):
     else:
         city_name = selection 
     return plot1(city_name,cost_subset), plot2(city_name, Expected_earnings), plot3(city_name, cost_subset), plot4(city_name)
+    
 
 
 
