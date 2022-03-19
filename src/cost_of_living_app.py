@@ -1,3 +1,4 @@
+from logging import PlaceHolder
 from dash import Dash, html, dcc, Input, Output, State
 from vega_datasets import data
 import altair as alt
@@ -29,17 +30,20 @@ def plot1(city_name,cost_subset):
     param: cost_subset, A string of selected specific cost type
     return: A bar chart showing living cost in selected cities 
     """
-    subset = data_df.loc[data_df["city"].isin(city_name),:]
-    y_title = list(price_subset.keys())[list(price_subset.values()).index(cost_subset)]
+    subset = data_df.loc[data_df["city"].isin(city_name),:].copy()
+    subset.loc[:, "working"] = subset.loc[:,cost_subset].sum(axis=1)
+
+    idx = [list(price_subset.values()).index(x) for x in cost_subset]
+    cat = [list(price_subset.keys())[x] for x in idx]
+    y_title = ' + '.join(cat)
+
     chart = alt.Chart(subset).mark_bar().encode(
-         alt.Y(cost_subset, title = f"{y_title}(USD)"),
+         alt.Y("working", title = f"{y_title}(USD)"),
          alt.X("city", title = "Cities", sort = "y", axis=alt.Axis(labelAngle=-45)),
          alt.Color("city",legend=None),
-         tooltip=[
-            alt.Tooltip(cost_subset),
-        ]
+         tooltip= cost_subset
     ).properties(
-        width=600
+        width=700
     )
     return chart.to_html()
 
@@ -78,30 +82,39 @@ def plot3(city_name, cost_subset):
     param: cost_subset, A string of selected specific cost type
     return: A choropleth map with point graph showing varying cost types in selected cities 
     """
-    subset = data_df.loc[data_df["city"].isin(city_name),:]
-    y_title = list(price_subset.keys())[list(price_subset.values()).index(cost_subset)]
+    subset = data_df.loc[data_df["city"].isin(city_name),:].copy()
+    subset.loc[:, "working"] = subset.loc[:,cost_subset].sum(axis=1)
+
+    idx = [list(price_subset.values()).index(x) for x in cost_subset]
+    cat = [list(price_subset.keys())[x] for x in idx]
+    y_title = ' + '.join(cat)
     world_map = alt.topo_feature(data.world_110m.url, feature ='countries')  
     map_click = alt.selection_multi(fields=['city'])
+    # bar_click = alt.selection_multi(fields=['city'])
 
     # background
     background = alt.Chart(world_map).mark_geoshape(
          stroke='black',
          fill='lightgray').encode(
+        ).project(type='equirectangular'
         ).properties(
-            width=740,
-            height=600
+            width=650,
+            height=350
         )
     # city positions on background
     points = alt.Chart(subset).mark_circle().encode(
             longitude='longitude:Q',
             latitude='latitude:Q',
             color='city:N',
-            size=alt.Size(cost_subset, scale=alt.Scale(range=[0, 1000]),
-                          legend=alt.Legend(title=f"{y_title}(USD)")),
-            opacity=alt.condition(map_click, alt.value(0.8), alt.value(0.2)),
-            tooltip=['city', 'region', 'country', cost_subset],
-            stroke=alt.value('white')).project(type='mercator').properties(width=600, height=350).add_selection(map_click)
-    chart = background + points
+            size=alt.Size("working", scale=alt.Scale(range=[0, 1000]),
+                          legend=alt.Legend(title=f"Sum of Selected Costs (USD)")),
+            # opacity=alt.condition(map_click, alt.value(0.8), alt.value(0.2)),
+            tooltip=(cost_subset + ['city', 'country']),
+            stroke=alt.value('white')).project(type='equirectangular'
+            ).add_selection(map_click)
+            
+
+    chart =  (background + points)
 
     return chart.to_html()
 
@@ -116,7 +129,7 @@ def plot4(city_name):
     subset = data_df.loc[data_df["city"].isin(city_name),:]
     chart = alt.Chart(subset).mark_bar().encode(
         alt.X("city", title = "Cities",  axis=alt.Axis(labelAngle=-45)),
-         alt.Y("property_price", title = "Property Price"),
+         alt.Y("property_price", title = "Property Price/m^2(USD)"),
          alt.Color("city",legend=None),
          tooltip=[
             alt.Tooltip("property_price"),
@@ -156,15 +169,16 @@ sidebar = html.Div(
         inputStyle={"margin-left": "25px", "margin-right": "5px", }
         ),
     html.Br(),
-    dcc.Dropdown(id='selection', multi=True, value=['Canada']),
+    dcc.Dropdown(id='selection', multi=True, value=['Canada'],
+     placeholder = "Select the cities or region" ),
     html.Br(),
     html.Br(),
     html.Div(["Select monthly costs",
         dcc.Dropdown(
             id='cost_subset', 
-            value="all",
+            value=["all"],
             options=[{'label': i, 'value': price_subset[i]} for i in list(price_subset.keys())],
-            multi=False)]),
+            multi=True)]),
     html.Br(),
     html.Br(),
     html.Div(["Expected monthly earnings ($USD)",
@@ -185,7 +199,7 @@ comparison_plot = dbc.Card([dbc.CardHeader('Monthly Cost Comparison'),
                             children = html.Iframe(
                                 id = "comparison_plot",
                                 style={'border-width': '0', 'width': '100%', 'height': '500px'},
-                                srcDoc= plot1(["New York"],"all"))
+                                srcDoc= plot1(["New York"],["all"]))
                                 ))
                             ], style={"height": "30rem"})
 
@@ -202,10 +216,10 @@ heat_map =  dbc.Card([dbc.CardHeader('Map of living costs'),
                             dbc.CardBody(dcc.Loading(
                             children = html.Iframe(
                                 id = "heat_map",
-                                style={'border-width': '0', 'width': '100%', 'height': '650px'},
-                                srcDoc= plot3(["Istanbul"],"all"))
+                                style={'border-width': '0', 'width': '100%', 'height': '500px'},
+                                srcDoc= plot3(["Istanbul"],["all"]))
                                 ))
-                            ], style={"height": "45rem"})                          
+                            ], style={"height": "30rem"})                          
 property_price = dbc.Card([dbc.CardHeader('Average property price per square meter'),
                             dbc.CardBody(dcc.Loading(
                             children = html.Iframe(
@@ -256,6 +270,21 @@ data_description = dbc.Accordion([
                 ], title="Utilities")          
 ])
 
+how_it_works = dbc.Accordion([
+            dbc.AccordionItem([
+                html.P("Firstly choose whether you want to compare between select cities or all ctites from a particular region."),
+                ], title = "Select between City and Region Option"),   
+            dbc.AccordionItem([
+                    html.P("After that choose the cities or a region from the drop down menu."),
+                ], title="Drop down menu for cities or region"),
+            dbc.AccordionItem([
+                html.P("Select a monthly cost you would like to compare the cities with, the next tab provides detailed breakdown of each monthly cost."),
+                ], title="Drop down menu for monthly cost"), 
+            dbc.AccordionItem([
+                    html.P("Enter monthly earnings."),
+                ], title="In order to see how much one can save in different cities, enter your expected monthly earnings.")        
+])
+
 
 
 content = dbc.Container([
@@ -276,6 +305,13 @@ content = dbc.Container([
             html.Br(),
             dbc.Col([footer])
             ], label = 'Cost of Living Comparison'),
+        dbc.Tab([ 
+            html.Br(),
+            "Here are some basic steps to help you interact with our app!",
+            html.Br(),
+            html.Br(),
+            how_it_works
+        ], label = 'How it works'),
         dbc.Tab([ 
             html.Br(),
             "All the data represents the year 2020.",
@@ -308,10 +344,11 @@ def update_date_dropdown(name):
 
 def update_output(selection,cost_subset,Expected_earnings):
     if selection[0] in regions:
-        city_name = data_df.loc[data_df.region == selection[0], "city"]
+        city_name = data_df.loc[data_df["region"].isin(selection), "city"]
     else:
         city_name = selection 
     return plot1(city_name,cost_subset), plot2(city_name, Expected_earnings), plot3(city_name, cost_subset), plot4(city_name)
+    
 
 
 
