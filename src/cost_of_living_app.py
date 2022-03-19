@@ -112,13 +112,7 @@ def plot3(city_name, cost_subset):
             tooltip=(cost_subset + ['city', 'country']),
             stroke=alt.value('white')).project(type='equirectangular'
             ).add_selection(map_click)
-            # .transform_filter(bar_click)
-
-    # bar2 = plot2(city_name, Expected_earnings)
-    # .encode(
-    #     opacity=alt.condition(bar_click, alt.value(0.8), alt.value(0.2)),
-    #     stroke=alt.condition(bar_click, alt.value('black'), alt.value('#ffffff00')),
-    #     color='region:N').add_selection(bar_click).transform_filter(map_click)
+            
 
     chart =  (background + points)
 
@@ -135,7 +129,7 @@ def plot4(city_name):
     subset = data_df.loc[data_df["city"].isin(city_name),:]
     chart = alt.Chart(subset).mark_bar().encode(
         alt.X("city", title = "Cities",  axis=alt.Axis(labelAngle=-45)),
-         alt.Y("property_price", title = "Property price/m^2(USD)"),
+         alt.Y("property_price", title = "Property Price/m^2(USD)"),
          alt.Color("city",legend=None),
          tooltip=[
             alt.Tooltip("property_price"),
